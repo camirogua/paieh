@@ -63,7 +63,10 @@ main <- function() {
   list(id="nama_10r_2hhinc", var_name="renta_media_hogar", more_filters=list(unit="EUR_HAB", direct="BAL", na_item="B5N")),
   list(id="nama_10r_3gdp", var_name="pbi_per_capita", more_filters=list(unit="EUR_HAB")),
   list(id="demo_r_d3dens", var_name="densidad_pobl"),
-  list(id="demo_r_pjangrp3", var_name="poblacion", more_filters=list(unit="NR", sex="T", age="TOTAL")),
+  # POBLACION total deje la de eurostat
+  list(id="demo_r_pjangrp3", var_name="poblacion_total", more_filters=list(unit="NR", sex="T", age="TOTAL")),
+  # lo mismo con tasa de criminalidad:
+  list(id="crim_gen_reg", var_name= "tasa_criminalidad", more_filters=list(unit="P_HTHAB")),
   # Tasa de riesgo de pobreza regional (EU-SILC, sin alquiler imputado) - esto tmb esta para es - mas comparable
   #no encontre equivalente en istat a la tasa con alquiler imputado de ine españa
   list(id="ilc_li41", var_name="tasa_pobreza", more_filters=list(unit="PC"))
@@ -71,50 +74,6 @@ main <- function() {
     map(do.call, what = read_eurostat_variable) |>
     reduce(left_join, by = join_by(anio, id_region, region))
   
-  # agrego Criminalidad de eurostat (Denuncias policiales)
-  # estaba en nuts3, paso a nuts2 - se podria hacer lo mismo para españa
-  denuncias <- get_eurostat(
-    "crim_gen_reg",
-    filters = list(
-      geo = c(
-        "ITC1","ITC2","ITC3","ITC4",
-        "ITH1","ITH2","ITH3","ITH4","ITH5",
-        "ITI1","ITI2","ITI3","ITI4",
-        "ITF1","ITF2","ITF3","ITF4","ITF5","ITF6",
-        "ITG1","ITG2"
-      ),
-      time_period = format(
-        seq.Date(as.Date("2008-01-01"), as.Date("2023-01-01"), by = "1 year"),
-        "%Y"
-      )
-    )
-  ) |>
-    mutate(
-      id_region = geo,
-      anio = as.Date(paste(time, "01", "01", sep = "-"))
-    ) |>
-    group_by(id_region, anio) |>
-    summarise(
-      denuncias = sum(values, na.rm = TRUE),
-      denuncias_unidad = first(unit),
-      .groups = "drop"
-    ) |>
-    inner_join(
-      eurostat_geodata_60_2016 |>
-        select(NUTS_ID, region = NUTS_NAME, CNTR_CODE) |>
-        filter(CNTR_CODE == "IT"),
-      by = join_by(id_region == NUTS_ID)
-    ) |>
-    select(anio, id_region, region, denuncias, denuncias_unidad)
-  
-  # hago tasa de criminalidad a mano
-  eurostat_control_df <- eurostat_control_df |>
-    left_join(denuncias, by = join_by(anio, id_region, region)) |>
-    mutate(
-      tasa_criminalidad = round(denuncias / poblacion * 100000, 1),
-      tasa_criminalidad_unidad = "por 100.000 hab."
-    )
-
   
   # Leemos el IDH por separado debido a que es un csv que contiene el HDI nacional y subnacional para todos los paises del mundo practicamente
   idh_df <- read_csv(
