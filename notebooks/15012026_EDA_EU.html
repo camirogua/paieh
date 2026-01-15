@@ -1,0 +1,2280 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="paie">
+
+<title>Análisis inicial: España e Italia (Estructura PyME)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="15012026_EDA_EU_files/libs/clipboard/clipboard.min.js"></script>
+<script src="15012026_EDA_EU_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="15012026_EDA_EU_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="15012026_EDA_EU_files/libs/quarto-html/popper.min.js"></script>
+<script src="15012026_EDA_EU_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="15012026_EDA_EU_files/libs/quarto-html/anchor.min.js"></script>
+<link href="15012026_EDA_EU_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="15012026_EDA_EU_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="15012026_EDA_EU_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="15012026_EDA_EU_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="15012026_EDA_EU_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Análisis inicial: España e Italia (Estructura PyME)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>paie </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="cargo-datos-y-uno" class="level1">
+<h1>Cargo datos y uno</h1>
+<p>revisar esto</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)   </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)  </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally) </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Carga de datos </span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>ita_control <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"processed"</span>,<span class="st">"variables"</span>,<span class="st">"it"</span>, <span class="st">"control.csv"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">anio =</span> <span class="fu">year</span>(anio), <span class="at">pais =</span> <span class="st">"Italia"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>es_control  <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"processed"</span>,<span class="st">"variables"</span>,<span class="st">"es"</span>, <span class="st">"control.csv"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">anio =</span> <span class="fu">year</span>(anio), <span class="at">pais =</span> <span class="st">"España"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>ita_pymes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"processed"</span>,<span class="st">"variables"</span>,<span class="st">"it"</span>, <span class="st">"pymes.csv"</span>))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>es_pymes  <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"processed"</span>,<span class="st">"variables"</span>,<span class="st">"es"</span>, <span class="st">"pymes.csv"</span>))</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Unimos </span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>df_eu <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  ita_control <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(ita_pymes, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"region"</span>, <span class="st">"anio"</span>)),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  es_control  <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(es_pymes, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"region"</span>, <span class="st">"anio"</span>))</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Limpieza y Unificación de población</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">pais =</span> <span class="fu">coalesce</span>(pais.x, pais.y),</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">poblacion =</span> <span class="fu">coalesce</span>(poblacion_total, pobl_total)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>pais.x, <span class="sc">-</span>pais.y, <span class="sc">-</span>poblacion_total, <span class="sc">-</span>pobl_total)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in inner_join(ita_control, ita_pymes, by = c("region", "anio")): Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 1 of `x` matches multiple rows in `y`.
+ℹ Row 21 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship =
+  "many-to-many"` to silence this warning.</code></pre>
+</div>
+</div>
+<p>Agrego un indicador relativo de cant de empresas</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Indicadores Relativos </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Creamos la variable de 'Peso PyME' (empresas por cada 1,000 habitantes)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df_eu <span class="ot">&lt;-</span> df_eu <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">ent_per_1000 =</span> (ent_nr <span class="sc">/</span> poblacion) <span class="sc">*</span> <span class="dv">1000</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">tasa_empleo_pyme =</span> (emp_nr <span class="sc">/</span> poblacion) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="reviso-la-estructura-de-los-datos" class="level1">
+<h1>Reviso la estructura de los datos</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resumen</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df_eu <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pais) <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">skim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">group_by(df_eu, pais)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">7876</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">52</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">39</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">pais</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 7%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 10%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: left;">pais</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">id_region</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">id_region</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">region</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">region</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">renta_media_hogar_unidad</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">renta_media_hogar_unidad</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pbi_per_capita_unidad</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pbi_per_capita_unidad</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">densidad_pobl_unidad</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">densidad_pobl_unidad</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">poblacion_total_unidad</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">988</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">poblacion_total_unidad</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">2772</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tasa_criminalidad_unidad</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">328</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tasa_criminalidad_unidad</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tasa_pobreza_unidad</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">328</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tasa_pobreza_unidad</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">hdi_unidad</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">hdi_unidad</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">656</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tramo</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tramo</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tasa_homicidios_unidad</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">328</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tasa_homicidios_unidad</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">6888</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pobl_total_unidad</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">328</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pobl_total_unidad</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">6888</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: left;">pais</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">anio</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2014.00</td>
+<td style="text-align: right;">3.74</td>
+<td style="text-align: right;">2008.00</td>
+<td style="text-align: right;">2011.00</td>
+<td style="text-align: right;">2014.00</td>
+<td style="text-align: right;">2017.00</td>
+<td style="text-align: right;">2020.00</td>
+<td style="text-align: left;">▇▅▇▅▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">anio</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2014.37</td>
+<td style="text-align: right;">3.73</td>
+<td style="text-align: right;">2008.00</td>
+<td style="text-align: right;">2011.00</td>
+<td style="text-align: right;">2015.00</td>
+<td style="text-align: right;">2018.00</td>
+<td style="text-align: right;">2020.00</td>
+<td style="text-align: left;">▆▃▇▅▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">renta_media_hogar</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">15077.33</td>
+<td style="text-align: right;">2960.27</td>
+<td style="text-align: right;">10200.00</td>
+<td style="text-align: right;">12700.00</td>
+<td style="text-align: right;">14300.00</td>
+<td style="text-align: right;">17200.00</td>
+<td style="text-align: right;">24100.00</td>
+<td style="text-align: left;">▆▇▃▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">renta_media_hogar</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">18621.02</td>
+<td style="text-align: right;">4540.81</td>
+<td style="text-align: right;">11200.00</td>
+<td style="text-align: right;">13800.00</td>
+<td style="text-align: right;">19800.00</td>
+<td style="text-align: right;">21800.00</td>
+<td style="text-align: right;">29100.00</td>
+<td style="text-align: left;">▇▂▇▅▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pbi_per_capita</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">22808.50</td>
+<td style="text-align: right;">4743.01</td>
+<td style="text-align: right;">16000.00</td>
+<td style="text-align: right;">19100.00</td>
+<td style="text-align: right;">21400.00</td>
+<td style="text-align: right;">26500.00</td>
+<td style="text-align: right;">36600.00</td>
+<td style="text-align: left;">▇▆▃▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pbi_per_capita</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">27599.83</td>
+<td style="text-align: right;">7584.81</td>
+<td style="text-align: right;">16300.00</td>
+<td style="text-align: right;">20400.00</td>
+<td style="text-align: right;">28300.00</td>
+<td style="text-align: right;">33400.00</td>
+<td style="text-align: right;">48400.00</td>
+<td style="text-align: left;">▇▆▆▃▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">densidad_pobl</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">690.72</td>
+<td style="text-align: right;">1566.60</td>
+<td style="text-align: right;">25.60</td>
+<td style="text-align: right;">62.10</td>
+<td style="text-align: right;">110.90</td>
+<td style="text-align: right;">278.70</td>
+<td style="text-align: right;">6512.80</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">densidad_pobl</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">180.35</td>
+<td style="text-align: right;">112.45</td>
+<td style="text-align: right;">38.60</td>
+<td style="text-align: right;">85.30</td>
+<td style="text-align: right;">162.10</td>
+<td style="text-align: right;">212.10</td>
+<td style="text-align: right;">439.20</td>
+<td style="text-align: left;">▇▇▂▃▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tasa_criminalidad</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">328</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">37.61</td>
+<td style="text-align: right;">10.96</td>
+<td style="text-align: right;">23.60</td>
+<td style="text-align: right;">29.10</td>
+<td style="text-align: right;">34.00</td>
+<td style="text-align: right;">44.20</td>
+<td style="text-align: right;">63.80</td>
+<td style="text-align: left;">▇▃▃▁▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tasa_criminalidad</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1092</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">333.03</td>
+<td style="text-align: right;">553.65</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">28.55</td>
+<td style="text-align: right;">111.93</td>
+<td style="text-align: right;">324.08</td>
+<td style="text-align: right;">3171.07</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tasa_pobreza</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">328</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">17.49</td>
+<td style="text-align: right;">6.70</td>
+<td style="text-align: right;">6.10</td>
+<td style="text-align: right;">13.20</td>
+<td style="text-align: right;">15.20</td>
+<td style="text-align: right;">23.40</td>
+<td style="text-align: right;">34.50</td>
+<td style="text-align: left;">▃▇▂▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tasa_pobreza</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">18.88</td>
+<td style="text-align: right;">10.30</td>
+<td style="text-align: right;">4.90</td>
+<td style="text-align: right;">10.60</td>
+<td style="text-align: right;">14.30</td>
+<td style="text-align: right;">27.10</td>
+<td style="text-align: right;">44.60</td>
+<td style="text-align: left;">▇▅▃▂▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">hdi</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">▂▆▇▆▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">hdi</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">656</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: left;">▆▃▆▇▃</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">94312.48</td>
+<td style="text-align: right;">136254.09</td>
+<td style="text-align: right;">123.00</td>
+<td style="text-align: right;">7053.25</td>
+<td style="text-align: right;">41675.00</td>
+<td style="text-align: right;">101870.50</td>
+<td style="text-align: right;">692469.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">106340.60</td>
+<td style="text-align: right;">142586.72</td>
+<td style="text-align: right;">330.00</td>
+<td style="text-align: right;">12965.00</td>
+<td style="text-align: right;">43469.00</td>
+<td style="text-align: right;">127781.75</td>
+<td style="text-align: right;">833732.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_brth_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">122</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">8713.80</td>
+<td style="text-align: right;">14081.53</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">346.50</td>
+<td style="text-align: right;">3082.50</td>
+<td style="text-align: right;">9829.00</td>
+<td style="text-align: right;">74512.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_brth_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">7712.19</td>
+<td style="text-align: right;">11153.36</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">371.00</td>
+<td style="text-align: right;">2497.00</td>
+<td style="text-align: right;">8508.00</td>
+<td style="text-align: right;">63165.00</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_dth_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">274</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">8874.07</td>
+<td style="text-align: right;">13188.78</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">381.50</td>
+<td style="text-align: right;">3751.50</td>
+<td style="text-align: right;">10406.75</td>
+<td style="text-align: right;">65844.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_dth_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1008</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">7411.37</td>
+<td style="text-align: right;">10590.99</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">256.00</td>
+<td style="text-align: right;">2401.00</td>
+<td style="text-align: right;">8565.00</td>
+<td style="text-align: right;">56942.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_srvl_y3_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">4972.00</td>
+<td style="text-align: right;">7746.25</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">232.25</td>
+<td style="text-align: right;">2039.00</td>
+<td style="text-align: right;">5823.00</td>
+<td style="text-align: right;">44173.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_srvl_y3_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4621.16</td>
+<td style="text-align: right;">6659.59</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">223.00</td>
+<td style="text-align: right;">1653.00</td>
+<td style="text-align: right;">5408.00</td>
+<td style="text-align: right;">42354.00</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">emp_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">377518.84</td>
+<td style="text-align: right;">628906.98</td>
+<td style="text-align: right;">2181.00</td>
+<td style="text-align: right;">57789.75</td>
+<td style="text-align: right;">168397.00</td>
+<td style="text-align: right;">385280.50</td>
+<td style="text-align: right;">3941178.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">emp_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">405976.44</td>
+<td style="text-align: right;">601859.22</td>
+<td style="text-align: right;">7717.00</td>
+<td style="text-align: right;">79186.00</td>
+<td style="text-align: right;">206580.00</td>
+<td style="text-align: right;">427707.75</td>
+<td style="text-align: right;">4200740.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sal_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">305944.43</td>
+<td style="text-align: right;">569215.17</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">2318.25</td>
+<td style="text-align: right;">121069.50</td>
+<td style="text-align: right;">306769.25</td>
+<td style="text-align: right;">3500266.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sal_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">284655.54</td>
+<td style="text-align: right;">496608.30</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">6291.00</td>
+<td style="text-align: right;">102556.00</td>
+<td style="text-align: right;">274079.00</td>
+<td style="text-align: right;">3311357.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">emp_brth_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">122</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">12543.85</td>
+<td style="text-align: right;">18045.52</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1614.75</td>
+<td style="text-align: right;">6035.50</td>
+<td style="text-align: right;">14014.75</td>
+<td style="text-align: right;">107113.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">emp_brth_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">10152.29</td>
+<td style="text-align: right;">13437.40</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1531.25</td>
+<td style="text-align: right;">4960.00</td>
+<td style="text-align: right;">13871.00</td>
+<td style="text-align: right;">95198.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sal_brth_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">122</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">4769.83</td>
+<td style="text-align: right;">7597.28</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1549.50</td>
+<td style="text-align: right;">5784.00</td>
+<td style="text-align: right;">42073.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sal_brth_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3262.44</td>
+<td style="text-align: right;">5061.81</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">971.00</td>
+<td style="text-align: right;">4047.75</td>
+<td style="text-align: right;">33784.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">emp_dth_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">274</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">14396.84</td>
+<td style="text-align: right;">19892.22</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">2256.75</td>
+<td style="text-align: right;">7012.00</td>
+<td style="text-align: right;">16176.75</td>
+<td style="text-align: right;">111267.00</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">emp_dth_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1008</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">9497.59</td>
+<td style="text-align: right;">12554.06</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1257.00</td>
+<td style="text-align: right;">4637.00</td>
+<td style="text-align: right;">13058.00</td>
+<td style="text-align: right;">97615.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sal_dth_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">274</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">6634.62</td>
+<td style="text-align: right;">10602.25</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">2133.50</td>
+<td style="text-align: right;">7729.25</td>
+<td style="text-align: right;">63151.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sal_dth_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1008</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">2477.44</td>
+<td style="text-align: right;">3870.54</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">742.50</td>
+<td style="text-align: right;">3506.00</td>
+<td style="text-align: right;">32469.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">emp_srvl_y3_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">11088.73</td>
+<td style="text-align: right;">16089.29</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1568.75</td>
+<td style="text-align: right;">5223.00</td>
+<td style="text-align: right;">12342.00</td>
+<td style="text-align: right;">98716.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">emp_srvl_y3_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">10847.03</td>
+<td style="text-align: right;">14392.46</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1626.00</td>
+<td style="text-align: right;">4817.00</td>
+<td style="text-align: right;">14016.00</td>
+<td style="text-align: right;">97322.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">emp_srvl_ybrth_y3_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">7996.35</td>
+<td style="text-align: right;">11096.16</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1326.75</td>
+<td style="text-align: right;">4035.00</td>
+<td style="text-align: right;">9242.25</td>
+<td style="text-align: right;">71618.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">emp_srvl_ybrth_y3_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">6663.07</td>
+<td style="text-align: right;">8735.55</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1053.00</td>
+<td style="text-align: right;">3045.00</td>
+<td style="text-align: right;">8747.25</td>
+<td style="text-align: right;">66561.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">grw_ent_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">456</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">-0.15</td>
+<td style="text-align: right;">3.74</td>
+<td style="text-align: right;">-12.77</td>
+<td style="text-align: right;">-1.87</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">2.07</td>
+<td style="text-align: right;">18.10</td>
+<td style="text-align: left;">▁▆▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">grw_ent_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1848</td>
+<td style="text-align: right;">0.73</td>
+<td style="text-align: right;">-0.23</td>
+<td style="text-align: right;">2.57</td>
+<td style="text-align: right;">-10.91</td>
+<td style="text-align: right;">-1.63</td>
+<td style="text-align: right;">-0.30</td>
+<td style="text-align: right;">1.20</td>
+<td style="text-align: right;">9.08</td>
+<td style="text-align: left;">▁▂▇▃▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_brthr_dthr_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">492</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">14.20</td>
+<td style="text-align: right;">7.82</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">8.96</td>
+<td style="text-align: right;">15.11</td>
+<td style="text-align: right;">20.50</td>
+<td style="text-align: right;">28.74</td>
+<td style="text-align: left;">▇▅▆▇▅</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_brthr_dthr_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">10.42</td>
+<td style="text-align: right;">6.31</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">4.79</td>
+<td style="text-align: right;">11.47</td>
+<td style="text-align: right;">15.53</td>
+<td style="text-align: right;">25.15</td>
+<td style="text-align: left;">▇▅▇▆▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_brthr_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">342</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">7.03</td>
+<td style="text-align: right;">4.54</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">3.26</td>
+<td style="text-align: right;">7.20</td>
+<td style="text-align: right;">10.65</td>
+<td style="text-align: right;">21.60</td>
+<td style="text-align: left;">▇▆▇▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_brthr_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1428</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">5.37</td>
+<td style="text-align: right;">3.16</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">2.58</td>
+<td style="text-align: right;">5.89</td>
+<td style="text-align: right;">7.79</td>
+<td style="text-align: right;">12.55</td>
+<td style="text-align: left;">▆▅▇▆▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_brth_pp_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">403</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">42.16</td>
+<td style="text-align: right;">38.42</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.74</td>
+<td style="text-align: right;">21.96</td>
+<td style="text-align: right;">80.35</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▂▁▃▅</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_brth_pp_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">41.70</td>
+<td style="text-align: right;">37.93</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">24.19</td>
+<td style="text-align: right;">79.21</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▃▁▃▅</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_dthr_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">486</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">7.04</td>
+<td style="text-align: right;">3.55</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">4.76</td>
+<td style="text-align: right;">7.74</td>
+<td style="text-align: right;">9.83</td>
+<td style="text-align: right;">14.74</td>
+<td style="text-align: left;">▆▂▇▇▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_dthr_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">4.99</td>
+<td style="text-align: right;">3.21</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.90</td>
+<td style="text-align: right;">5.36</td>
+<td style="text-align: right;">7.56</td>
+<td style="text-align: right;">12.73</td>
+<td style="text-align: left;">▇▆▇▆▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_dth_pp_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">715</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">48.14</td>
+<td style="text-align: right;">37.44</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: right;">32.92</td>
+<td style="text-align: right;">75.73</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▇▁▇▆</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_dth_pp_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">4683</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">46.67</td>
+<td style="text-align: right;">41.05</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">22.40</td>
+<td style="text-align: right;">84.64</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▂▁▂▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_srvlr_brth_y3_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">633</td>
+<td style="text-align: right;">0.36</td>
+<td style="text-align: right;">62.01</td>
+<td style="text-align: right;">11.60</td>
+<td style="text-align: right;">44.16</td>
+<td style="text-align: right;">52.98</td>
+<td style="text-align: right;">58.50</td>
+<td style="text-align: right;">67.24</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▇▂▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_srvlr_brth_y3_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">2786</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">62.88</td>
+<td style="text-align: right;">10.23</td>
+<td style="text-align: right;">20.00</td>
+<td style="text-align: right;">55.16</td>
+<td style="text-align: right;">61.82</td>
+<td style="text-align: right;">69.20</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▁▂▇▃▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_srvlr_y3_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">340</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">3.78</td>
+<td style="text-align: right;">2.04</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">2.17</td>
+<td style="text-align: right;">4.06</td>
+<td style="text-align: right;">5.41</td>
+<td style="text-align: right;">9.90</td>
+<td style="text-align: left;">▅▅▇▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_srvlr_y3_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1428</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">3.22</td>
+<td style="text-align: right;">1.63</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.83</td>
+<td style="text-align: right;">3.69</td>
+<td style="text-align: right;">4.44</td>
+<td style="text-align: right;">6.84</td>
+<td style="text-align: left;">▆▂▇▇▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">emp_brthr_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">326</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">5.29</td>
+<td style="text-align: right;">4.60</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.96</td>
+<td style="text-align: right;">4.01</td>
+<td style="text-align: right;">8.62</td>
+<td style="text-align: right;">21.75</td>
+<td style="text-align: left;">▇▃▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">emp_brthr_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1428</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">3.22</td>
+<td style="text-align: right;">2.65</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.29</td>
+<td style="text-align: right;">2.41</td>
+<td style="text-align: right;">5.07</td>
+<td style="text-align: right;">11.01</td>
+<td style="text-align: left;">▇▅▂▂▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_brth_empsize_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">347</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">5.20</td>
+<td style="text-align: right;">6.67</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">1.08</td>
+<td style="text-align: right;">1.53</td>
+<td style="text-align: right;">2.80</td>
+<td style="text-align: right;">36.61</td>
+<td style="text-align: left;">▇▁▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_brth_empsize_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1456</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">6.99</td>
+<td style="text-align: right;">16.69</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">1.40</td>
+<td style="text-align: right;">2.16</td>
+<td style="text-align: right;">301.00</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sal_emp_brthr_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">347</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">51.68</td>
+<td style="text-align: right;">38.59</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">41.61</td>
+<td style="text-align: right;">83.06</td>
+<td style="text-align: right;">99.59</td>
+<td style="text-align: left;">▅▅▁▁▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sal_emp_brthr_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1456</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">46.94</td>
+<td style="text-align: right;">36.50</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">44.41</td>
+<td style="text-align: right;">68.65</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: left;">▇▇▂▆▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">emp_dthr_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">486</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">5.49</td>
+<td style="text-align: right;">3.93</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">2.21</td>
+<td style="text-align: right;">4.92</td>
+<td style="text-align: right;">9.01</td>
+<td style="text-align: right;">15.32</td>
+<td style="text-align: left;">▆▇▂▃▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">emp_dthr_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">3.09</td>
+<td style="text-align: right;">2.75</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">2.26</td>
+<td style="text-align: right;">4.49</td>
+<td style="text-align: right;">11.69</td>
+<td style="text-align: left;">▇▃▂▂▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_dth_empsize_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">419</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">5.28</td>
+<td style="text-align: right;">6.66</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">1.11</td>
+<td style="text-align: right;">1.69</td>
+<td style="text-align: right;">2.67</td>
+<td style="text-align: right;">25.34</td>
+<td style="text-align: left;">▇▁▁▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_dth_empsize_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">2062</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">6.04</td>
+<td style="text-align: right;">8.80</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.30</td>
+<td style="text-align: right;">2.17</td>
+<td style="text-align: right;">57.09</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">grw_emp_srvl_y3_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">346</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">31.12</td>
+<td style="text-align: right;">25.86</td>
+<td style="text-align: right;">-61.11</td>
+<td style="text-align: right;">16.01</td>
+<td style="text-align: right;">31.49</td>
+<td style="text-align: right;">46.76</td>
+<td style="text-align: right;">192.64</td>
+<td style="text-align: left;">▁▇▅▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">grw_emp_srvl_y3_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1442</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">64.33</td>
+<td style="text-align: right;">48.54</td>
+<td style="text-align: right;">-51.10</td>
+<td style="text-align: right;">32.26</td>
+<td style="text-align: right;">50.94</td>
+<td style="text-align: right;">88.57</td>
+<td style="text-align: right;">522.92</td>
+<td style="text-align: left;">▇▅▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">emp_srvlr_y3_pc</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">340</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">4.09</td>
+<td style="text-align: right;">3.39</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.70</td>
+<td style="text-align: right;">3.16</td>
+<td style="text-align: right;">5.88</td>
+<td style="text-align: right;">13.20</td>
+<td style="text-align: left;">▇▇▁▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">emp_srvlr_y3_pc</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1428</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">3.30</td>
+<td style="text-align: right;">2.12</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.63</td>
+<td style="text-align: right;">3.42</td>
+<td style="text-align: right;">4.83</td>
+<td style="text-align: right;">10.81</td>
+<td style="text-align: left;">▇▇▇▂▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_srvl_empsize_y3_nr</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">346</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">6.06</td>
+<td style="text-align: right;">7.54</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">1.73</td>
+<td style="text-align: right;">2.38</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">57.87</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_srvl_empsize_y3_nr</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">1442</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">9.54</td>
+<td style="text-align: right;">15.71</td>
+<td style="text-align: right;">1.08</td>
+<td style="text-align: right;">1.70</td>
+<td style="text-align: right;">2.99</td>
+<td style="text-align: right;">6.09</td>
+<td style="text-align: right;">225.14</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tasa_homicidios</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">328</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">0.62</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">0.77</td>
+<td style="text-align: right;">1.77</td>
+<td style="text-align: left;">▂▇▅▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tasa_homicidios</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">6888</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">NaN</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">poblacion</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">328</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">2944991.27</td>
+<td style="text-align: right;">2560923.09</td>
+<td style="text-align: right;">315381.00</td>
+<td style="text-align: right;">1067710.00</td>
+<td style="text-align: right;">2118679.00</td>
+<td style="text-align: right;">4963703.00</td>
+<td style="text-align: right;">8464411.00</td>
+<td style="text-align: left;">▇▇▁▁▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">poblacion</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">2772</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">2858964.56</td>
+<td style="text-align: right;">2468288.28</td>
+<td style="text-align: right;">125034.00</td>
+<td style="text-align: right;">873744.00</td>
+<td style="text-align: right;">1636839.00</td>
+<td style="text-align: right;">4459453.00</td>
+<td style="text-align: right;">10027602.00</td>
+<td style="text-align: left;">▇▁▃▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ent_per_1000</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">388</td>
+<td style="text-align: right;">0.61</td>
+<td style="text-align: right;">36.76</td>
+<td style="text-align: right;">25.75</td>
+<td style="text-align: right;">1.73</td>
+<td style="text-align: right;">19.71</td>
+<td style="text-align: right;">33.18</td>
+<td style="text-align: right;">57.88</td>
+<td style="text-align: right;">90.99</td>
+<td style="text-align: left;">▆▇▅▃▃</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ent_per_1000</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">2772</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">36.89</td>
+<td style="text-align: right;">27.18</td>
+<td style="text-align: right;">1.17</td>
+<td style="text-align: right;">16.46</td>
+<td style="text-align: right;">30.85</td>
+<td style="text-align: right;">56.59</td>
+<td style="text-align: right;">90.46</td>
+<td style="text-align: left;">▇▇▆▃▅</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tasa_empleo_pyme</td>
+<td style="text-align: left;">España</td>
+<td style="text-align: right;">388</td>
+<td style="text-align: right;">0.61</td>
+<td style="text-align: right;">13.84</td>
+<td style="text-align: right;">10.69</td>
+<td style="text-align: right;">3.48</td>
+<td style="text-align: right;">5.48</td>
+<td style="text-align: right;">8.96</td>
+<td style="text-align: right;">20.61</td>
+<td style="text-align: right;">59.15</td>
+<td style="text-align: left;">▇▂▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tasa_empleo_pyme</td>
+<td style="text-align: left;">Italia</td>
+<td style="text-align: right;">2772</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">13.17</td>
+<td style="text-align: right;">9.54</td>
+<td style="text-align: right;">3.25</td>
+<td style="text-align: right;">6.05</td>
+<td style="text-align: right;">8.96</td>
+<td style="text-align: right;">18.05</td>
+<td style="text-align: right;">41.96</td>
+<td style="text-align: left;">▇▂▁▂▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Recordar que tenemos las variables siguientes:</p>
+<ul>
+<li>Interés: Variables de PyMEs.</li>
+</ul>
+<p>ent_nr, ent_per_1000, tramo, grw_ent_pc</p>
+<ul>
+<li>Resultados (bienestar): Gini, PBI per cápita, Tasa de pobreza, Ingreso medio.</li>
+</ul>
+<p>pbi_per_capita, renta_media_hogar, tasa_pobreza</p>
+<ul>
+<li>Control: Densidad poblacional, IDH(o es res?), crimenes, Años de estudio.</li>
+</ul>
+<p>densidad_pobl, hdi, tasa_criminalidad, tasa_homicidios</p>
+<p>revisar las d control y res para anotar bien</p>
+</section>
+<section id="cómo-se-distribuyen-las-empresas-por-tamaño-en-cada-país" class="level1">
+<h1>¿Cómo se distribuyen las empresas por tamaño en cada país?</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_eu <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(anio <span class="sc">==</span> <span class="fu">max</span>(anio)) <span class="sc">|&gt;</span> <span class="co"># año reciente</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> tramo, <span class="at">y =</span> ent_nr, <span class="at">fill =</span> pais)) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> <span class="co">#log</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución del número de empresas por tramo"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Número de empresas (escala log)"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Tramo de tamaño"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15012026_EDA_EU_files/figure-html/graf_tramos-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>o sea hay un monton de empresas soy tan petit</p>
+<p>queremos ver si mas pymes mas pbi</p>
+</section>
+<section id="relación-pymes-y-bienestar" class="level1">
+<h1>Relación PYMES y bienestar</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtramos por un tramo específico para evitar duplicar el PBI en el gráfico</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Tramo de pequeñas (o no se, el de 1 a 9)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>df_eu <span class="sc">|&gt;</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(tramo <span class="sc">==</span> <span class="st">"1 a 9"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ent_per_1000, <span class="at">y =</span> pbi_per_capita, <span class="at">color =</span> pais)) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relación Pequeñas empresas vs PBI per cápita"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Cant. de empresas (Tramo 1-9) cada 1000 hab"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"PBI per cápita"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 790 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 790 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15012026_EDA_EU_files/figure-html/graf_corr-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df_eu <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(tramo <span class="sc">==</span> <span class="st">"1 a 9"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pais, ent_per_1000, pbi_per_capita, tasa_pobreza, hdi) <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggpairs</span>(<span class="fu">aes</span>(<span class="at">color =</span> pais, <span class="at">alpha =</span> <span class="fl">0.4</span>)) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Correlaciones Cruzadas por País"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 790 rows containing non-finite outside the scale range
+(`stat_boxplot()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 82 rows containing non-finite outside the scale range
+(`stat_boxplot()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 164 rows containing non-finite outside the scale range
+(`stat_boxplot()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 790 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 790 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 790 rows containing missing values
+Removed 790 rows containing missing values</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 888 rows containing missing values</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 790 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 82 rows containing missing values</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 164 rows containing missing values</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 82 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 790 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 82 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 82 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 246 rows containing missing values</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 164 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 888 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 164 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 246 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 164 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15012026_EDA_EU_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>df_cuadrantes <span class="ot">&lt;-</span> df_eu <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(tramo <span class="sc">==</span> <span class="st">"1 a 9"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pais) <span class="sc">|&gt;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mediana_pyme =</span> <span class="fu">median</span>(ent_per_1000, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mediana_pbi =</span> <span class="fu">median</span>(pbi_per_capita, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Definimos el cuadrante para cada región</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">patron =</span> <span class="fu">case_when</span>(</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>      ent_per_1000 <span class="sc">&gt;=</span> mediana_pyme <span class="sc">&amp;</span> pbi_per_capita <span class="sc">&gt;=</span> mediana_pbi <span class="sc">~</span> <span class="st">"A: Alto PyME / Alto PBI"</span>,</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>      ent_per_1000 <span class="sc">&lt;</span> mediana_pyme  <span class="sc">&amp;</span> pbi_per_capita <span class="sc">&gt;=</span> mediana_pbi <span class="sc">~</span> <span class="st">"B: Bajo PyME / Alto PBI"</span>,</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>      ent_per_1000 <span class="sc">&gt;=</span> mediana_pyme <span class="sc">&amp;</span> pbi_per_capita <span class="sc">&lt;</span> mediana_pbi  <span class="sc">~</span> <span class="st">"C: Alto PyME / Bajo PBI"</span>,</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>      ent_per_1000 <span class="sc">&lt;</span> mediana_pyme  <span class="sc">&amp;</span> pbi_per_capita <span class="sc">&lt;</span> mediana_pbi  <span class="sc">~</span> <span class="st">"D: Bajo PyME / Bajo PBI"</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfica de Patrones regionales con cuadrantes</span></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_cuadrantes, <span class="fu">aes</span>(<span class="at">x =</span> ent_per_1000, <span class="at">y =</span> pbi_per_capita, <span class="at">color =</span> patron)) <span class="sc">+</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Líneas de referencia (Medianas)</span></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> mediana_pbi), <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> mediana_pyme), <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>pais) <span class="sc">+</span></span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>) <span class="sc">+</span> <span class="co">#</span></span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>) <span class="sc">+</span></span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Cuadrantes: relación empresas pequeñas y PIB"</span>,</span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Basado en medianas nacionales para el tramo 1-9 empresas"</span>,</span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Empresas (1-9) cada 1000 habitantes"</span>,</span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"PBI per cápita"</span>,</span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Patrón identificado:"</span></span>
+<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 790 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15012026_EDA_EU_files/figure-html/graf_cuadrantes_patrones-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

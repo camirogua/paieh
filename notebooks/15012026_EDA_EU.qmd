@@ -1,0 +1,174 @@
+---
+title: "Análisis inicial: España e Italia (Estructura PyME)"
+author: "paie"
+format: 
+  html:
+    code-fold: true
+---
+
+# Cargo datos y uno
+
+revisar esto
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+library(here)
+library(skimr)   
+library(scales)  
+library(patchwork)
+library(GGally) 
+
+# Carga de datos 
+ita_control <- read_csv(here("data","processed","variables","it", "control.csv")) |> 
+  mutate(anio = year(anio), pais = "Italia")
+
+es_control  <- read_csv(here("data","processed","variables","es", "control.csv")) |> 
+  mutate(anio = year(anio), pais = "España")
+
+ita_pymes <- read_csv(here("data","processed","variables","it", "pymes.csv"))
+es_pymes  <- read_csv(here("data","processed","variables","es", "pymes.csv"))
+
+# Unimos 
+df_eu <- bind_rows(
+  ita_control |> inner_join(ita_pymes, by = c("region", "anio")),
+  es_control  |> inner_join(es_pymes, by = c("region", "anio"))
+) |>
+# Limpieza y Unificación de población
+  mutate(
+    pais = coalesce(pais.x, pais.y),
+    poblacion = coalesce(poblacion_total, pobl_total)
+  ) |>
+  select(-pais.x, -pais.y, -poblacion_total, -pobl_total)
+
+```
+
+Agrego un indicador relativo de cant de empresas
+
+```{r}
+# Indicadores Relativos 
+# Creamos la variable de 'Peso PyME' (empresas por cada 1,000 habitantes)
+df_eu <- df_eu |>
+  mutate(
+    ent_per_1000 = (ent_nr / poblacion) * 1000,
+    tasa_empleo_pyme = (emp_nr / poblacion) * 100
+  )
+
+```
+
+
+# Reviso la estructura de los datos
+
+```{r}
+#| label: res_data
+# Resumen
+df_eu |> 
+  group_by(pais) |> 
+  skim()
+```
+
+Recordar que tenemos las variables siguientes:
+
+- Interés: Variables de PyMEs.
+
+ent_nr, ent_per_1000, tramo, grw_ent_pc 
+
+- Resultados (bienestar): Gini, PBI per cápita, Tasa de pobreza, Ingreso medio.
+
+pbi_per_capita, renta_media_hogar, tasa_pobreza
+
+- Control: Densidad poblacional, IDH(o es res?), crimenes, Años de estudio. 
+
+densidad_pobl, hdi, tasa_criminalidad, tasa_homicidios
+
+revisar las d control y res para anotar bien
+
+# ¿Cómo se distribuyen las empresas por tamaño en cada país?
+
+```{r}
+#| label: graf_tramos
+
+df_eu |> 
+  filter(anio == max(anio)) |> # año reciente
+  ggplot(aes(x = tramo, y = ent_nr, fill = pais)) +
+  geom_boxplot() +
+  scale_y_log10() + #log
+  theme_minimal() +
+  labs(title = "Distribución del número de empresas por tramo",
+       y = "Número de empresas (escala log)",
+       x = "Tramo de tamaño")
+```
+o sea hay un monton de empresas soy tan petit 
+
+queremos ver si mas pymes mas pbi
+
+# Relación PYMES y bienestar
+
+```{r}
+#| label: graf_corr
+# Filtramos por un tramo específico para evitar duplicar el PBI en el gráfico
+# Tramo de pequeñas (o no se, el de 1 a 9)
+
+df_eu |> 
+  filter(tramo == "1 a 9") |> 
+  ggplot(aes(x = ent_per_1000, y = pbi_per_capita, color = pais)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm") +
+  theme_minimal() +
+  labs(title = "Relación Pequeñas empresas vs PBI per cápita",
+       x = "Cant. de empresas (Tramo 1-9) cada 1000 hab",
+       y = "PBI per cápita")
+```
+```{r}
+df_eu |>
+  filter(tramo == "1 a 9") |>
+  select(pais, ent_per_1000, pbi_per_capita, tasa_pobreza, hdi) |>
+  ggpairs(aes(color = pais, alpha = 0.4)) +
+  theme_minimal() +
+  labs(title = "Correlaciones Cruzadas por País")
+```
+
+```{r}
+#| label: graf_cuadrantes_patrones
+#| fig-width: 10
+#| fig-height: 8
+
+df_cuadrantes <- df_eu |>
+  filter(tramo == "1 a 9") |>
+  group_by(pais) |>
+  mutate(
+    mediana_pyme = median(ent_per_1000, na.rm = TRUE),
+    mediana_pbi = median(pbi_per_capita, na.rm = TRUE),
+    # Definimos el cuadrante para cada región
+    patron = case_when(
+      ent_per_1000 >= mediana_pyme & pbi_per_capita >= mediana_pbi ~ "A: Alto PyME / Alto PBI",
+      ent_per_1000 < mediana_pyme  & pbi_per_capita >= mediana_pbi ~ "B: Bajo PyME / Alto PBI",
+      ent_per_1000 >= mediana_pyme & pbi_per_capita < mediana_pbi  ~ "C: Alto PyME / Bajo PBI",
+      ent_per_1000 < mediana_pyme  & pbi_per_capita < mediana_pbi  ~ "D: Bajo PyME / Bajo PBI"
+    )
+  ) |>
+  ungroup()
+
+# Gráfica de Patrones regionales con cuadrantes
+ggplot(df_cuadrantes, aes(x = ent_per_1000, y = pbi_per_capita, color = patron)) +
+  geom_point(size = 3, alpha = 0.8) +
+  # Líneas de referencia (Medianas)
+  geom_hline(aes(yintercept = mediana_pbi), linetype = "dashed", color = "gray40") +
+  geom_vline(aes(xintercept = mediana_pyme), linetype = "dashed", color = "gray40") +
+  facet_wrap(~pais) +
+  scale_color_brewer(palette = "Set1") + #
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "Cuadrantes: relación empresas pequeñas y PIB",
+    subtitle = "Basado en medianas nacionales para el tramo 1-9 empresas",
+    x = "Empresas (1-9) cada 1000 habitantes",
+    y = "PBI per cápita",
+    color = "Patrón identificado:"
+  )
+```
+
+
+
