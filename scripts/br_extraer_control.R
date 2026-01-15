@@ -12,13 +12,17 @@ main <- function() {
       ipeadata(code, "en") |>
         mutate(tcode=as.character(tcode)) |>
         filter(uname == "States") |>
-        inner_join(regiones |> select(tcode, tname), by = "tcode")
+        # Agregamos 'area' al select para que la información pase al dataframe
+        # ya estaban los datos aca mismo
+        inner_join(regiones |> select(tcode, tname, area), by = "tcode")
     }) |>
     bind_rows() |>
-    pivot_wider(id_cols=c("date", "tname"), names_from="code", values_from="value") |>
+    # Agregamos 'area' a id_cols para que no desaparezca al transformar la tabla a formato ancho
+    pivot_wider(id_cols=c("date", "tname", "area"), names_from="code", values_from="value") |>
     rename(
       anio = "date",
       region = "tname",
+      area_km2 = "area",
       gini = "PNADCA_GINIUF",
       pib_per_capita = "PIBPCE",
       tasa_pobr = "PNADCA_TXPNUF",
@@ -28,7 +32,9 @@ main <- function() {
       ingreso_medio = "SIS_RDPCMEDIO",
       prom_anio_estudio = "PNADCA_NMAE25UF",
       tasa_homicidios = "THOMIC"
-    )
+    ) |>
+    # Calculamos la densidad poblacional
+    mutate(densidad_pobl = pobl_total / area_km2)
   
   br_control_df |>
     write_csv(file.path("data", "processed", "variables", "br", "control.csv"))
